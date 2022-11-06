@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import { useEffect, useState } from 'react'
 
 function App() {
+  const [tasks, setTasks] = useState([])
+  useEffect(() => {
+    getTasks()
+  }, [])
+
+  async function getTasks() {
+    const tasks = await axios.get('https://jsonplaceholder.typicode.com/todos')
+    setTasks(tasks.data)
+  }
+
+  function renderTasks() {
+    return tasks.map(task => <div>{task.title}</div>)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Task Manager</h1>
+      <div>
+        {renderTasks()}
+      </div>
     </div>
   );
 }
